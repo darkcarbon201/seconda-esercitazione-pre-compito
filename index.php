@@ -1,17 +1,63 @@
 <?php 
 
-if(isset($_GET["options"])){
+$a = isset($_GET["a"]) && is_numeric($_GET["a"]) && $_GET["a"] != "" ? floatval($_GET["a"]) :"NOT_VALID";
+$b = isset($_GET["b"]) && is_numeric($_GET["b"]) && $_GET["b"] != "" ? floatval($_GET["b"]) :"NOT_VALID";
+
+$errore_a = false;
+$errore_b = false;
+
+$mostraRisultato = false;
+
+if ($a == "NOT_VALID"){
+    $errore_a = true;
+}
+if( $b == "NOT_VALID"){
+    $errore_b = true;
+}
+
+if($errore_a = false && $errore_b = false){
+    $mostraRisultato = true;
+    if (isset($_GET["options"])){
+        print_r($_GET["options"]);
+        //se L'array options è definito posso scorrerlo:
+        //con for   oppure
+        //con un foreach
+        //foreach ($array as $element)
+        // ... qui $element è l'elementop i-esimo dell'array
+        if(in_array("absolute", $_GET["options"])){
+
+        }
+}
+
+if (isset($_GET["options"]) && isset($_GET["operazione"])){
     print_r($_GET["options"]);
+    print_r($_GET["operazione"]);
     //se L'array options è definito posso scorrerlo:
     //con for   oppure
     //con un foreach
+    //foreach ($array as $element)
+    // ... qui $element è l'elementop i-esimo dell'array
+    if(in_array("absolute", $_GET["options"])){
+
+    }
+
+
+
+    //foreach ($_GET["options"] as $element){
+    //    echo $element . "<br>";
+        // in questo caso particolare possiamo usare un'altra funzione per fare operazioni condizionali 
+    //}
+
+    //if(in_array("absolute", $_GET["options"])){
+            // allora calcola il valore assoluto;
+            // qui controllo se l'utente ha selezionato ANCHE square Senza else if ma solo con if()
+    //}
+    
 }
 ?>
 
 
-
-
-
+<?php if($mostraRisultato = true)?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,36 +67,23 @@ if(isset($_GET["options"])){
 </head>
 <body>
 
-<style>
-    body{
-        font-family: arial,sans-serif;
-        align-content: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding-left: 60px;
-        padding-right: 60px;
-        padding-top: 32px;
-        padding-bottom: 32px;
-        margin: 0;
-        box-sizing: border-box;
-    }
-    fieldset{
-        margin-top: 20px;
-        width: 250px;
-    }
-    input[type ="text"]{
-        width: 160px;
-        height: 20px;
-        margin-bottom: 5px;
-    }
 
-    input[type = "radio"],
-    input[type = "checkbox"]{
-        margin: 5px;
-    }
-</style>
+</body>
+</html>
+<?php ?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
 
     <form action="index.php" method="get">
         <h1>Calcolatrice</h1>
@@ -64,39 +97,38 @@ if(isset($_GET["options"])){
         </div>        
    
 
-
     
         <fieldset>
             <legend>Operazione</legend>
         
             <div>
-                <input id="somma" type="radio" name="options[]" value="somma" >
+                <input id="somma" type="radio" name="operazione[]" value="somma" >
                   <label for="somma">Somma</label> 
             </div>
 
             <div>
-                <input id="differenza" type="radio" name="options[]" value="differenza" ><!--  lato php vedrà opzioni come un array che in questo caso sarà di tre valori-->
+                <input id="differenza" type="radio" name="operazione[]" value="differenza" >
                 <label for="differenza">Differenza</label> 
             </div>
             <div>
-                <input id="prodotto" type="radio" name="options[]" value="round" >
+                <input id="prodotto" type="radio" name="operazione[]" value="prodotto" >
                 <label for="prodotto">Prodotto</label> 
             </div>
             <div>
-                <input id="quozionte" type="radio" name="options[]" value="round" ><!--  lato php vedrà opzioni come un array che in questo caso sarà di tre valori-->
-                <label for="quozionte">Quozionte</label> <!-- per collegare la label e la casella  il for del label e l'id dell'input devono avere lo stesso es : abs-->
+                <input id="quozionte" type="radio" name="operazione[]" value="quozionte" >
+                <label for="quozionte">Quozionte</label>
             </div>
 
         </fieldset>
         <fieldset>
             <legend>opzioni</legend>
             <div>
-                <input id="abs" type="checkbox" name="options[]" value="absolute" ><!--  lato php vedrà opzioni come un array che in questo caso sarà di tre valori-->
-                <label for="abs">Valore assoluto</label> <!-- per collegare la label e la casella  il for del label e l'id dell'input devono avere lo stesso es : abs-->
+                <input id="abs" type="checkbox" name="options[]" value="absolute" >
+                <label for="abs">Valore assoluto</label> 
             </div>
             <div>
-                <input id="square" type="checkbox" name="options[]" value="square" ><!--  lato php vedrà opzioni come un array che in questo caso sarà di tre valori-->
-                <label for="square">Quadrato</label> <!-- per collegare la label e la casella  il for del label e l'id dell'input devono avere lo stesso es : abs-->
+                <input id="square" type="checkbox" name="options[]" value="square" >
+                <label for="square">Quadrato</label> 
             </div>
             <div>
                 <input id="round" type="checkbox" name="options[]" value="round" ><!--  lato php vedrà opzioni come un array che in questo caso sarà di tre valori-->
@@ -111,3 +143,4 @@ if(isset($_GET["options"])){
     
 </body>
 </html>
+
