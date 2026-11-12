@@ -12,17 +12,22 @@ body{
     margin: 0;
     box-sizing: border-box;
 }
-    fieldset{
-        margin-top: 20px;
-        width: 250px;
-    }
-    input[type ="text"]{
-        width: 160px;
-        height: 20px;
-        margin-bottom: 5px;
-    }
+fieldset{
+    margin-top: 20px;
+    width: 250px;
+}
+input[type ="text"]{
+    width: 160px;
+    height: 20px;
+    margin-bottom: 5px;
+}
 
-    input[type = "radio"],
-    input[type = "checkbox"]{
-        margin: 5px;
-    }
+input[type = "radio"],
+input[type = "checkbox"]{
+    margin: 5px;
+}
+
+.errore{
+    color: red;
+    font-weight: 200;
+}

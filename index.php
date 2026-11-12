@@ -1,12 +1,16 @@
 <?php 
 
-$a = isset($_GET["a"]) && is_numeric($_GET["a"]) && $_GET["a"] != "" ? floatval($_GET["a"]) :"NOT_VALID";
-$b = isset($_GET["b"]) && is_numeric($_GET["b"]) && $_GET["b"] != "" ? floatval($_GET["b"]) :"NOT_VALID";
+$a = isset($_GET["a"]) && is_numeric($_GET["a"]) && $_GET["a"] != "" ? floatval($_GET["a"]) : "NOT_VALID";
+$b = isset($_GET["b"]) && is_numeric($_GET["b"]) && $_GET["b"] != "" ? floatval($_GET["b"]) : "NOT_VALID";
+$operazione = isset($_GET["operazione"]) && !is_numeric($_GET["operazione"]) ? ($_GET["operazione"]) : "NOT_VALID";
+
 
 $errore_a = false;
 $errore_b = false;
-
+$errore_op = false; 
 $mostraRisultato = false;
+$errore_0 = false;
+$risultato = 0;
 
 if ($a == "NOT_VALID"){
     $errore_a = true;
@@ -15,31 +19,57 @@ if( $b == "NOT_VALID"){
     $errore_b = true;
 }
 
-if($errore_a = false && $errore_b = false){
+if($errore_a == false && $errore_b == false){
     $mostraRisultato = true;
-    if (isset($_GET["options"])){
-        print_r($_GET["options"]);
-        //se L'array options è definito posso scorrerlo:
-        //con for   oppure
-        //con un foreach
-        //foreach ($array as $element)
-        // ... qui $element è l'elementop i-esimo dell'array
-        if(in_array("absolute", $_GET["options"])){
-
+    
+        // print_r($_GET["options"]); es.    Array ( [0] => absolute )
+        
+        if($operazione == "NOT_VALID" ){
+            $errore_op = true;
+        }elseif($operazione == "somma"){
+            $risultato = $a + $b;
+        }elseif($operazione == "differenza"){
+            $risultato = $a - $b;
+        }elseif($operazione == "prodotto"){
+            $risultato = $a * $b;
+        }elseif($operazione == "quoziente"){
+            if ($b == 0) {
+                $errore_0 = true;
+            }else{
+                $risultato = $a / $b;
+            }
         }
+            
+        if (isset($_GET["options"])){
+            if(in_array("absolute", $_GET["options"])){
+            $risultato = abs($risultato);
+            }
+
+            if(in_array("square", $_GET["options"])){
+            $risultato = $risultato * $risultato;
+            }
+
+            if(in_array("round", $_GET["options"])){
+            $risultato = round($risultato , 2);
+            }
+    }
+        
 }
 
-if (isset($_GET["options"]) && isset($_GET["operazione"])){
-    print_r($_GET["options"]);
-    print_r($_GET["operazione"]);
+    
+
+
+//if (isset($_GET["options"]) && isset($_GET["operazione"])){
+//    print_r($_GET["options"]);
+//    print_r($_GET["operazione"]);
     //se L'array options è definito posso scorrerlo:
     //con for   oppure
     //con un foreach
     //foreach ($array as $element)
     // ... qui $element è l'elementop i-esimo dell'array
-    if(in_array("absolute", $_GET["options"])){
+//    if(in_array("absolute", $_GET["options"])){
 
-    }
+//  }
 
 
 
@@ -53,24 +83,29 @@ if (isset($_GET["options"]) && isset($_GET["operazione"])){
             // qui controllo se l'utente ha selezionato ANCHE square Senza else if ma solo con if()
     //}
     
-}
+
 ?>
 
 
-<?php if($mostraRisultato = true)?>
+<?php if($mostraRisultato == true):?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+    <div>Risultato: <?php echo $risultato ?></div>
+    <div>Operazione scelta: <?php echo $operazione  ?></div>
+    
 
 </body>
 </html>
-<?php ?>
+
+<?php else: ?>
 
 
 <!DOCTYPE html>
@@ -90,10 +125,19 @@ if (isset($_GET["options"]) && isset($_GET["operazione"])){
         <div>
             <label for="a"><b>a:</b></label>
             <input type="text" name="a" id="a">
+            <?php if($errore_a == true): ?>
+            <p class="errore">inserisci un numero valido</p>
+            <?php endif ?>
         </div>
         <div>
             <label for="b"><b>b:</b></label>
             <input type="text" id="b" name="b">
+            <?php if($errore_b == true): ?>
+            <p class="errore">inserisci un numero valido</p>
+            <?php endif ?>
+            <?php if($errore_0 == true): ?>
+            <p class="errore">non puoi dividere per 0  </p>
+            <?php endif ?>
         </div>        
    
 
@@ -102,21 +146,21 @@ if (isset($_GET["options"]) && isset($_GET["operazione"])){
             <legend>Operazione</legend>
         
             <div>
-                <input id="somma" type="radio" name="operazione[]" value="somma" >
+                <input id="somma" type="radio" name="operazione" value="somma" >
                   <label for="somma">Somma</label> 
             </div>
 
             <div>
-                <input id="differenza" type="radio" name="operazione[]" value="differenza" >
+                <input id="differenza" type="radio" name="operazione" value="differenza" >
                 <label for="differenza">Differenza</label> 
             </div>
             <div>
-                <input id="prodotto" type="radio" name="operazione[]" value="prodotto" >
+                <input id="prodotto" type="radio" name="operazione" value="prodotto" >
                 <label for="prodotto">Prodotto</label> 
             </div>
             <div>
-                <input id="quozionte" type="radio" name="operazione[]" value="quozionte" >
-                <label for="quozionte">Quozionte</label>
+                <input id="quoziente" type="radio" name="operazione" value="quoziente" >
+                <label for="quoziente">Quoziente</label>
             </div>
 
         </fieldset>
@@ -129,6 +173,7 @@ if (isset($_GET["options"]) && isset($_GET["operazione"])){
             <div>
                 <input id="square" type="checkbox" name="options[]" value="square" >
                 <label for="square">Quadrato</label> 
+                
             </div>
             <div>
                 <input id="round" type="checkbox" name="options[]" value="round" ><!--  lato php vedrà opzioni come un array che in questo caso sarà di tre valori-->
@@ -144,3 +189,4 @@ if (isset($_GET["options"]) && isset($_GET["operazione"])){
 </body>
 </html>
 
+<?php endif ?>
